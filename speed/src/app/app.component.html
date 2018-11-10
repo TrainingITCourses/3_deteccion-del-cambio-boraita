@@ -1,8 +1,10 @@
-<h1>Angular Speed: aplicaciones de alto rendimiento</h1>
-
-<router-outlet></router-outlet>
-
-<footer>
-  <a href="https://trainingit.es/">Training IT</a>
-  <small>A course By <a href="https://twitter.com/albertobasalo">Alberto Basalo</a></small>
-</footer>
+Searching critery:
+<select (change)="criteryChanged($event)">
+  <option
+    *ngFor="let critery of criteries"
+    [ngValue]="critery"
+    [selected]="critery.value === 'state'"
+    >{{ critery.name }}</option
+  >
+</select>
+<app-filter-list [filterList]="criteryList | async"></app-filter-list>
