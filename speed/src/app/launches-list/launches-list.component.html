@@ -1,0 +1,33 @@
+<div>Total Result: {{ launchesList.length }}</div>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Windowstart</th>
+    <th>Windowend</th>
+    <th>Net</th>
+    <th>Status</th>
+    <th>Tbdtime</th>
+    <th>VidURLs</th>
+    <th>VidURL</th>
+    <th>Tbddate</th>
+    <th>Probability</th>
+    <th>Hashtag</th>
+    <th>Changed</th>
+    <th>Lsp</th>
+  </tr>
+  <tr *ngFor="let item of launchesList">
+    <td>{{ item.name }}</td>
+    <td>{{ item.windowstart }}</td>
+    <td>{{ item.windowend }}</td>
+    <td>{{ item.net }}</td>
+    <td>{{ item.status }}</td>
+    <td>{{ item.tbdtime }}</td>
+    <td>{{ item.vidURLs }}</td>
+    <td>{{ item.vidURL }}</td>
+    <td>{{ item.tbddate }}</td>
+    <td>{{ item.probability }}</td>
+    <td>{{ item.hashtag }}</td>
+    <td>{{ item.changed }}</td>
+    <td>{{ item.lsp }}</td>
+  </tr>
+</table>

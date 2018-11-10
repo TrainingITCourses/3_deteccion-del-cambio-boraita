@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-filter-list',
@@ -7,4 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FilterListComponent {
   @Input() filterList;
+  @Output() fieldSelected = new EventEmitter();
+
+  onSelectedField(fieldSelected) {
+    this.fieldSelected.next(fieldSelected);
+  }
 }
