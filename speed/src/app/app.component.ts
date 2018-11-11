@@ -1,11 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, filter } from 'rxjs/operators';
 
-import { Agency } from './store/models/agency';
-import { LaunchLight } from './store/models/launch-light';
-import { Mission } from './store/models/mission';
-import { Launch } from './store/models/launch';
+import { FilterService } from './services/filter.service';
+import { CriteryService } from './services/critery.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +15,10 @@ export class AppComponent implements OnInit {
   criteryList;
   criterySelected;
   launchesList;
-  constructor(private http: HttpClient) {}
+  constructor(
+    private filterService: FilterService,
+    private criteryService: CriteryService
+  ) {}
   ngOnInit() {
     this.criteries = [
       { value: 'state', name: 'Estado' },
@@ -28,67 +27,37 @@ export class AppComponent implements OnInit {
     ];
     this.criterySelected = this.criteries[0];
     this.criteryChanged();
-    this.launchesList = this.http
-      .get('../assets/data/launches.json')
-      .pipe(map(data => data['launches']));
+    this.launchesList = this.filterService.getAllLaunches();
   }
   criteryChanged() {
     switch (this.criterySelected.value) {
       case 'agencies':
-        this.criteryList = this.http
-          .get('../assets/data/agencies.json')
-          .pipe(map(data => data['agencies']));
+        this.criteryList = this.criteryService.getAgencies();
         break;
       case 'state':
-        this.criteryList = this.http
-          .get('../assets/data/launchstatus.json')
-          .pipe(map(data => data['types']));
+        this.criteryList = this.criteryService.getState();
         break;
       case 'type':
-        this.criteryList = this.http
-          .get('../assets/data/missiontypes.json')
-          .pipe(map(data => data['types']));
+        this.criteryList = this.criteryService.getTypes();
         break;
     }
   }
   filterLaunches(filterSelected) {
     switch (this.criterySelected.value) {
       case 'agencies':
-        this.launchesList = this.http.get('../assets/data/launches.json').pipe(
-          map(data =>
-            data['launches'].filter((launch: Launch) => {
-              if (launch.missions.length > 0 && launch.missions[0].agencies ) {
-                return launch.missions[0].agencies.find(
-                  agency => agency.type === filterSelected.type
-                );
-              }
-            })
-          )
+        this.launchesList = this.filterService.getFilterAgencies(
+          filterSelected.type
         );
         break;
       case 'state':
-        this.launchesList = this.http
-          .get('../assets/data/launches.json')
-          .pipe(
-            map(data =>
-              data['launches'].filter(
-                (launch: Launch) => launch.status === filterSelected.id
-              )
-            )
-          );
+        this.launchesList = this.filterService.getFilterMissions(
+          filterSelected.id
+        );
         break;
       case 'type':
-        this.launchesList = this.http
-          .get('../assets/data/launches.json')
-          .pipe(
-            map(data =>
-              data['launches'].filter((launch: Launch) =>
-                launch.missions.find(
-                  mission => mission.type === filterSelected.id
-                )
-              )
-            )
-          );
+        this.launchesList = this.filterService.getFilterLaunchers(
+          filterSelected.id
+        );
         break;
     }
   }

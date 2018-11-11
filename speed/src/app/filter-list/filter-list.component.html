@@ -1,7 +1,7 @@
 <ul>
   <li
     *ngFor="let field of filterList"
-    style="list-style-type: none"
+    class="active"
     (click)="onSelectedField(field)"
   >
     <div>{{ field.name }}</div>
